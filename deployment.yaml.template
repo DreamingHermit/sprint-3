@@ -1,0 +1,129 @@
+resources:
+  # Rule 1: Internet to Kong API Gateway
+  - name: allow-internet-to-kong
+    type: compute.v1.firewall
+    properties:
+      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      priority: 1000
+      direction: INGRESS
+      sourceRanges:
+      - ${INTERFACE_2_KONG_API_GATEWAY}
+      targetTags:
+      - kong-api-gateway
+      allowed:
+      - IPProtocol: TCP
+        ports:
+        - ${PORT_DEFAULT_KONG_API_GATEWAY}
+        - ${PORT_ADMIN_API_KONG_API_GATEWAY}
+        - ${PORT_ADMIN_GUI_KONG_API_GATEWAY}
+
+  # Rule 2: Kong API Gateway to Service Aggregators
+  - name: allow-kong-to-service-aggregators
+    type: compute.v1.firewall
+    properties:
+      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      priority: 1000
+      direction: INGRESS
+      sourceTags:
+      - kong-api-gateway
+      targetTags:
+      - service-aggregator
+      allowed:
+      - IPProtocol: TCP
+        ports:
+        - ${PORT_SERVICE_AGGREGATOR}
+
+  # Rule 3: Service Aggregators to Load Balancers A & B
+  - name: allow-service-aggregators-to-load-balancers-a
+    type: compute.v1.firewall
+    properties:
+      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      priority: 1000
+      direction: INGRESS
+      sourceTags:
+      - service-aggregator
+      targetTags:
+      - load-balancer-a
+      allowed:
+      - IPProtocol: TCP
+        ports:
+        - ${PORT_LOAD_BALANCER}
+
+  - name: allow-service-aggregators-to-load-balancers-b
+    type: compute.v1.firewall
+    properties:
+      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      priority: 1000
+      direction: INGRESS
+      sourceTags:
+      - service-aggregator
+      targetTags:
+      - load-balancer-b
+      allowed:
+      - IPProtocol: TCP
+        ports:
+        - ${PORT_LOAD_BALANCER}
+
+  # Rule 4: Load Balancer A to Product Managers
+  - name: allow-lb-a-to-product-managers
+    type: compute.v1.firewall
+    properties:
+      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      priority: 1000
+      direction: INGRESS
+      sourceTags:
+      - load-balancer-a
+      targetTags:
+      - product-manager
+      allowed:
+      - IPProtocol: TCP
+        ports:
+        - ${PORT_PRODUCT_MANAGER}
+
+  # Rule 5: Load Balancer B to Log Managers
+  - name: allow-lb-b-to-log-managers
+    type: compute.v1.firewall
+    properties:
+      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      priority: 1000
+      direction: INGRESS
+      sourceTags:
+      - load-balancer-b
+      targetTags:
+      - log-manager
+      allowed:
+      - IPProtocol: TCP
+        ports:
+        - ${PORT_LOG_MANAGER}
+
+  # Rule 6: Product Managers to Business Database
+  - name: allow-product-managers-to-business-db
+    type: compute.v1.firewall
+    properties:
+      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      priority: 1000
+      direction: INGRESS
+      sourceTags:
+      - product-manager
+      targetTags:
+      - business-database
+      allowed:
+      - IPProtocol: TCP
+        ports:
+        - ${PORT_BUSINESS_DATABASE}
+
+  # Rule 7: Log Managers to Log Database
+  - name: allow-log-managers-to-log-db
+    type: compute.v1.firewall
+    properties:
+      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      priority: 1000
+      direction: INGRESS
+      sourceTags:
+      - log-manager
+      targetTags:
+      - log-database
+      allowed:
+      - IPProtocol: TCP
+        ports:
+        - ${PORT_LOG_DATABASE}

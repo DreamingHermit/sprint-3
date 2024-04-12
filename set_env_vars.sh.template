@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Creating and writing to env_vars.sh
+export PROJECT_ID = "<ID>"
+
+# Kong env vars
+export PORT_DEFAULT_KONG_API_GATEWAY="<PORT>"
+export PORT_ADMIN_API_KONG_API_GATEWAY="<PORT>"
+export PORT_ADMIN_GUI_KONG_API_GATEWAY="<PORT>"
+export INTERFACE_KONG_API_GATEWAY="<INTERFACE>"
+
+# Service Aggregator env vars
+export PRIVATE_IP_SERVICE_AGGREGATOR_A="<IP>"
+export PRIVATE_IP_SERVICE_AGGREGATOR_B="<IP>"
+export PORT_SERVICE_AGGREGATOR="<PORT>"
+export INTERFACE_SERVICE_AGGREGATOR="<INTERFACE>"
+
+# Load Balancers env vars
+export PRIVATE_IP_LOAD_BALANCER_A="<IP>" # Balances the load of product managers
+export PRIVATE_IP_LOAD_BALANCER_B="<IP>" # Balances the load of log managers
+export PORT_LOAD_BALANCER="<PORT>"
+#export INTERFACE_LOAD_BALANCER="<PORT>"
+
+# Product Manager env vars
+export PRIVATE_IP_PRODUCT_MANAGER_A="<IP>"
+export PRIVATE_IP_PRODUCT_MANAGER_B="<IP>"
+export PORT_PRODUCT_MANAGER="<PORT>"
+export INTERFACE_PRODUCT_MANAGER="<PORT>"
+
+# Log Manager env vars
+export PRIVATE_IP_LOG_MANAGER_A="<IP>"
+export PRIVATE_IP_LOG_MANAGER_B="<IP>"
+export PORT_LOG_MANAGER="<PORT>"
+export INTERFACE_LOG_MANAGER="<PORT>"
+
+# Business Database env vars
+export PRIVATE_IP_BUSINESS_DATABASE="<IP>"
+export PORT_BUSINESS_DATABASE="<PORT>"
+export INTERFACE_BUSINESS_DATABASE="<INTERFACE>"
+export LISTEN_ADDR_BUSINESS_DATABASE="<LISTEN_ADDR>"
+export MAX_CONN_BUSINESS_DATABASE="MAX_CONN"
+export POSTGRESQL_DB_NAME="<NAME>"
+export POSTGRESQL_DB_USER="<USER>"
+export POSTGRESQL_DB_PASSWORD="<PASSWORD>"
+
+# Log Database env vars
+export PRIVATE_IP_LOG_DATABASE="<IP>"
+export PORT_LOG_DATABASE="<PORT>"
+export INTERFACE_LOG_DATABASE="<PORT>"
+export MAX_CONN_LOG_DATABASE="<MAX_CONN>"
+export LOG_DB_NAME="<NAME>"
+export LOG_DB_USER="<USER>"
+export LOG_DB_PASSWORD="<PASSWORD>"
+
+
+# Substitute environment variables in deployment.yaml.template and output to deployment.yml
+envsubst < deployment.yaml.template > deployment.yml

@@ -1,0 +1,19 @@
+_format_version: "2.1"
+
+services:
+  - host: service_aggregator_upstream
+    name: service_aggregator_service
+    protocol: http
+    routes:
+      - name: service_aggregator
+        paths:
+          - /
+        strip_path: false
+    
+upstreams:
+  - name: service_aggregator_upstream
+    targets:
+      - target: "${PRIVATE_IP_SERVICE_AGGREGATOR_A}:${PORT_SERVICE_AGGREGATOR}"
+        weight: 100
+      - target: "${PRIVATE_IP_SERVICE_AGGREGATOR_B}:${PORT_SERVICE_AGGREGATOR}"
+        weight: 100
