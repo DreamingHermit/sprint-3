@@ -231,6 +231,91 @@ resources:
         - key: startup-script
           value: |
             #!/bin/bash
-            echo "Done"
+            export PRIVATE_IP_BUSINESS_DATABASE="${PRIVATE_IP_BUSINESS_DATABASE}"
+            export PORT_BUSINESS_DATABASE="${PORT_BUSINESS_DATABASE}"
+            export POSTGRESQL_DB_NAME="${POSTGRESQL_DB_NAME}"
+            export POSTGRESQL_DB_USER="${POSTGRESQL_DB_USER}"
+            export POSTGRESQL_DB_PASSWORD="${POSTGRESQL_DB_PASSWORD}"
+            sudo add-apt-repository ppa:deadsnakes/ppa
+            sudo apt update
+            sudo apt install python3.11 -y
+            git init product_manager/
+            cd product_manager/
+            git remote add -f origin https://github.com/arquisoft-genesis-202401/sprint-2-final.git
+            git config core.sparseCheckout true
+            echo "requirements.txt" >> .git/info/sparse-checkout
+            echo "product_manager/" >> .git/info/sparse-checkout
+            git pull origin main 
+            sed -i '/.*certifi.*/d' requirements.txt
+            sed -i '/.*influxdb-client.*/d' requirements.txt
+            sed -i '/.*python-dateutil.*/d' requirements.txt
+            sed -i '/.*reactivex.*/d' requirements.txt
+            sed -i '/.*six.*/d' requirements.txt
+            sed -i '/.*typing_extensions.*/d' requirements.txt
+            sed -i '/.*urllib3.*/d' requirements.txt
+            python3.11 -m venv env --without-pip
+            source env/bin/activate
+            curl https://bootstrap.pypa.io/get-pip.py | python
+            pip install -r requirements.txt
+            cd product_manager/
+            python manage.py makemigrations
+            python manage.py migrate
+            python manage.py runserver ${INTERFACE_PRODUCT_MANAGER}:${PORT_PRODUCT_MANAGER}
 
-  
+  # Instance for Product Manager B
+  - name: product-manager-b-instance
+    type: compute.v1.instance
+    properties:
+      zone: us-central1-a
+      machineType: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/zones/us-central1-a/machineTypes/e2-micro
+      disks:
+      - deviceName: boot
+        type: PERSISTENT
+        boot: true
+        autoDelete: true
+        initializeParams:
+          sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+      networkInterfaces:
+      - network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+        networkIP: ${PRIVATE_IP_PRODUCT_MANAGER_B}
+        accessConfigs:
+        - name: External NAT
+          type: ONE_TO_ONE_NAT
+      tags:
+        items: 
+        - product-manager
+      metadata:
+        items:
+        - key: startup-script
+          value: |
+            #!/bin/bash
+            export PRIVATE_IP_BUSINESS_DATABASE="${PRIVATE_IP_BUSINESS_DATABASE}"
+            export PORT_BUSINESS_DATABASE="${PORT_BUSINESS_DATABASE}"
+            export POSTGRESQL_DB_NAME="${POSTGRESQL_DB_NAME}"
+            export POSTGRESQL_DB_USER="${POSTGRESQL_DB_USER}"
+            export POSTGRESQL_DB_PASSWORD="${POSTGRESQL_DB_PASSWORD}"
+            sudo add-apt-repository ppa:deadsnakes/ppa
+            sudo apt update
+            sudo apt install python3.11 -y
+            git init product_manager/
+            cd product_manager/
+            git remote add -f origin https://github.com/arquisoft-genesis-202401/sprint-2-final.git
+            git config core.sparseCheckout true
+            echo "requirements.txt" >> .git/info/sparse-checkout
+            echo "product_manager/" >> .git/info/sparse-checkout
+            git pull origin main 
+            sed -i '/.*certifi.*/d' requirements.txt
+            sed -i '/.*influxdb-client.*/d' requirements.txt
+            sed -i '/.*python-dateutil.*/d' requirements.txt
+            sed -i '/.*reactivex.*/d' requirements.txt
+            sed -i '/.*six.*/d' requirements.txt
+            sed -i '/.*typing_extensions.*/d' requirements.txt
+            sed -i '/.*urllib3.*/d' requirements.txt
+            python3.11 -m venv env --without-pip
+            source env/bin/activate
+            curl https://bootstrap.pypa.io/get-pip.py | python
+            pip install -r requirements.txt
+            cd product_manager/
+            python manage.py makemigrations
+            python manage.py migrate
+            python manage.py runserver ${INTERFACE_PRODUCT_MANAGER}:${PORT_PRODUCT_MANAGER}

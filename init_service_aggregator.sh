@@ -4,7 +4,7 @@ export PRIVATE_IP_LOAD_BALANCER_B="${PRIVATE_IP_LOAD_BALANCER_B}"
 export PORT_LOAD_BALANCER=="${PORT_LOAD_BALANCER}"
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
-sudo apt install python3.11.8
+sudo apt install python3.11 -y
 git init service_aggregator/
 cd service_aggregator/
 git remote add -f origin https://github.com/arquisoft-genesis-202401/sprint-2-final.git
@@ -20,8 +20,9 @@ sed -i '/.*reactivex.*/d' requirements.txt
 sed -i '/.*six.*/d' requirements.txt
 sed -i '/.*typing_extensions.*/d' requirements.txt
 sed -i '/.*urllib3.*/d' requirements.txt
-python3.11.8 -m venv env
+python3.11 -m venv env --without-pip
 source env/bin/activate
+curl https://bootstrap.pypa.io/get-pip.py | python
 pip install -r requirements.txt
 cd service_aggregator/
 python manage.py runserver ${INTERFACE_SERVICE_AGGREGATOR}:${PORT_SERVICE_AGGREGATOR}
