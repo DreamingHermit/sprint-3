@@ -7,3 +7,4 @@ echo "host all all ${INTERFACE_BUSINESS_DATABASE} trust" | sudo tee -a /etc/post
 echo "listen_addresses='${LISTEN_ADDR_BUSINESS_DATABASE}'" | sudo tee -a /etc/postgresql/12/main/postgresql.conf
 echo "max_connections=${MAX_CONN_BUSINESS_DATABASE}" | sudo tee -a /etc/postgresql/12/main/postgresql.conf
 sudo service postgresql restart
+echo "Done"

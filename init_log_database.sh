@@ -8,5 +8,6 @@ sudo systemctl enable influxdb.service
 influx -execute 'CREATE DATABASE ${LOG_DB_NAME}'
 influx -execute "CREATE USER ${LOG_DB_USER} WITH PASSWORD '${LOG_DB_PASSWORD}'"
 influx -execute "GRANT ALL ON ${LOG_DB_NAME} TO ${LOG_DB_USER}"
+echo "Done"
 
 
