@@ -43,7 +43,6 @@ upstreams:
       - target: ${PRIVATE_IP_PRODUCT_MANAGER_B}:${PORT_PRODUCT_MANAGER}
         weight: 100
 
-  # Upstream for Log Managers
   - name: log_manager_upstream
     targets:
       - target: ${PRIVATE_IP_LOG_MANAGER_A}:${PORT_LOG_MANAGER}
