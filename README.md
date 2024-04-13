@@ -1,15 +1,46 @@
-# sprint-2-final
+# Sprint 2 Final
 
-Python 3.11.8 is used
+## Overview
+This document outlines the steps for deploying Sprint 2 Final using Python 3.11.8.
 
-wget --no-cache https://raw.githubusercontent.com/arquisoft-genesis-202401/sprint-2-final/main/set_env_vars.sh.template
-wget --no-cache https://raw.githubusercontent.com/arquisoft-genesis-202401/sprint-2-final/main/deployment.yaml.template
-Update set_env_vars.sh.template with the real values, store this in set_env_vars.sh
-chmod +x set_env_vars.sh
-source set_env_vars.sh
-gcloud deployment-manager deployments create sprint-2-final-deployment --config deployment.yaml
-gcloud deployment-manager deployments delete sprint-2-final-deployment
+## Deployment Instructions
+1. Download the necessary templates:
+    ```bash
+    wget --no-cache https://raw.githubusercontent.com/arquisoft-genesis-202401/sprint-2-final/main/set_env_vars.sh.template
+    wget --no-cache https://raw.githubusercontent.com/arquisoft-genesis-202401/sprint-2-final/main/deployment.yaml.template
+    ```
 
-gcloud deployment-manager deployments update sprint-2-final-deployment --config deployment.yaml
-sudo journalctl -u google-startup-scripts.service
+2. Update `set_env_vars.sh.template` with the real values and save it as `set_env_vars.sh`.
+
+3. Grant execution permission to the script:
+    ```bash
+    chmod +x set_env_vars.sh
+    ```
+
+4. Source the environment variables:
+    ```bash
+    source set_env_vars.sh
+    ```
+
+5. Create the deployment using `gcloud deployment-manager`:
+    ```bash
+    gcloud deployment-manager deployments create sprint-2-final-deployment --config deployment.yaml
+    ```
+
+6. To delete the deployment, run:
+    ```bash
+    gcloud deployment-manager deployments delete sprint-2-final-deployment
+    ```
+
+7. To update the deployment configuration, use:
+    ```bash
+    gcloud deployment-manager deployments update sprint-2-final-deployment --config deployment.yaml
+    ```
+
+## Additional Steps (Optional)
+- View startup logs using:
+    ```bash
+    sudo journalctl -u google-startup-scripts.service
+    ```
+
 
