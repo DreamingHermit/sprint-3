@@ -49,6 +49,10 @@ This document outlines the steps for deploying Sprint 2 Final using Python 3.11.
 - Query the logs:
     ```bash
     influx -database '<db_name>' -execute "SELECT * FROM <measurements>"
+
+- Restart Kong:
+    ```bash
+    sudo docker restart kong
     ```
 
 
