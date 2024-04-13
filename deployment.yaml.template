@@ -414,7 +414,7 @@ resources:
             echo "Log database is up and running."
             python manage.py runserver ${INTERFACE_LOG_MANAGER}:${PORT_LOG_MANAGER}
   
-  # Kong API Gateway
+  # Instance of Kong API Gateway
   - type: compute.v1.instance
     name: kong-api-gateway-instance
     properties:
@@ -437,8 +437,8 @@ resources:
         items: 
         - kong-api-gateway
       metadata:
-          items:
-          - key: startup-script
-            value: |
-              #!/bin/bash
-              echo "Done"
+        items:
+        - key: startup-script
+          value: |
+            #!/bin/bash
+            echo "Done"
