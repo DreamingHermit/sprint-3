@@ -1,7 +1,7 @@
 # Sprint 2 Final
 
 ## Overview
-This document outlines the steps for deploying Sprint 2 Final using Python 3.11.8.
+This document outlines the steps for deploying Sprint 2 Final using Python 3.11.
 
 ## Deployment Instructions
 1. Download the necessary templates:
