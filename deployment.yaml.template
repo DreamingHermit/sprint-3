@@ -17,8 +17,8 @@ resources:
         - ${PORT_ADMIN_API_KONG_API_GATEWAY}
         - ${PORT_ADMIN_GUI_KONG_API_GATEWAY}
 
-  # Rule 2: Kong API Gateway to Service Aggregators
-  - name: allow-kong-to-service-aggregators
+  # Rule 2: Kong API Gateway to Product Managers
+  - name: allow-service-aggregators-a-to-product-managers
     type: compute.v1.firewall
     properties:
       network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
@@ -27,29 +27,13 @@ resources:
       sourceTags:
       - kong-api-gateway
       targetTags:
-      - service-aggregator
-      allowed:
-      - IPProtocol: TCP
-        ports:
-        - ${PORT_SERVICE_AGGREGATOR}
-
-  # Rule 3: Service Aggregators to Product Managers
-  - name: allow-service-aggregators-a-to-product-managers
-    type: compute.v1.firewall
-    properties:
-      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
-      priority: 1000
-      direction: INGRESS
-      sourceTags:
-      - service-aggregator
-      targetTags:
       - product-manager
       allowed:
       - IPProtocol: TCP
         ports:
         - ${PORT_PRODUCT_MANAGER}
 
-  # Rule 4: Service Aggregators to Log Managers
+  # Rule 3: Kong API Gateway to Log Managers
   - name: allow-service-aggregators-to-log-managers
     type: compute.v1.firewall
     properties:
@@ -57,7 +41,7 @@ resources:
       priority: 1000
       direction: INGRESS
       sourceTags:
-      - service-aggregator
+      - kong-api-gateway
       targetTags:
       - log-manager
       allowed:
@@ -65,7 +49,7 @@ resources:
         ports:
         - ${PORT_LOG_MANAGER}
 
-  # Rule 5: Product Managers to Business Database
+  # Rule 4: Product Managers to Business Database
   - name: allow-product-managers-to-business-db
     type: compute.v1.firewall
     properties:
@@ -81,7 +65,7 @@ resources:
         ports:
         - ${PORT_BUSINESS_DATABASE}
 
-  # Rule 6: Log Managers to Log Database
+  # Rule 5: Log Managers to Log Database
   - name: allow-log-managers-to-log-db
     type: compute.v1.firewall
     properties:
@@ -413,63 +397,6 @@ resources:
             done
             echo "Log database is up and running."
             python manage.py runserver ${INTERFACE_LOG_MANAGER}:${PORT_LOG_MANAGER}
-
-  # Service Aggregators instances
-  - type: compute.v1.instance
-    name: service-aggregator-a-instance
-    properties:
-      zone: us-central1-a
-      machineType: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/zones/us-central1-a/machineTypes/e2-micro
-      disks:
-      - deviceName: boot
-        type: PERSISTENT
-        boot: true
-        autoDelete: true
-        initializeParams:
-          sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
-      networkInterfaces:
-      - network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
-        networkIP: ${PRIVATE_IP_SERVICE_AGGREGATOR_A}
-        accessConfigs:
-        - name: External NAT
-          type: ONE_TO_ONE_NAT
-      tags:
-        items: 
-        - service-aggregator
-      metadata:
-        items:
-        - key: startup-script
-          value: |
-            #!/bin/bash
-            echo "Done"
-
-  - type: compute.v1.instance
-    name: service-aggregator-b-instance
-    properties:
-      zone: us-central1-a
-      machineType: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/zones/us-central1-a/machineTypes/e2-micro
-      disks:
-      - deviceName: boot
-        type: PERSISTENT
-        boot: true
-        autoDelete: true
-        initializeParams:
-          sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
-      networkInterfaces:
-      - network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
-        networkIP: ${PRIVATE_IP_SERVICE_AGGREGATOR_B}
-        accessConfigs:
-        - name: External NAT
-          type: ONE_TO_ONE_NAT
-      tags:
-        items: 
-        - service-aggregator
-      metadata:
-        items:
-        - key: startup-script
-          value: |
-            #!/bin/bash
-            echo "Done"
 
   # Instance of Kong API Gateway
   - type: compute.v1.instance

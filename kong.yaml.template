@@ -1,0 +1,52 @@
+_format_version: "2.1"
+
+services:
+  - name: service_aggregator_service
+    protocol: http
+    host: service_aggregator_upstream
+    routes:
+      - name: service_aggregator_route
+        paths:
+          - "/"
+        strip_path: false
+
+  - name: product_manager_service
+    protocol: http
+    host: product_manager_upstream
+    routes:
+      - name: product_manager_route
+        paths:
+          - "/products"
+        strip_path: true
+
+  - name: log_manager_service
+    protocol: http
+    host: log_manager_upstream
+    routes:
+      - name: log_manager_route
+        paths:
+          - "/logs"
+        strip_path: true
+
+upstreams:
+  - name: service_aggregator_upstream
+    targets:
+      - target: ${PRIVATE_IP_SERVICE_AGGREGATOR_A}:${PORT_SERVICE_AGGREGATOR}
+        weight: 100
+      - target: ${PRIVATE_IP_SERVICE_AGGREGATOR_B}:${PORT_SERVICE_AGGREGATOR}
+        weight: 100
+
+  - name: product_manager_upstream
+    targets:
+      - target: ${PRIVATE_IP_PRODUCT_MANAGER_A}:${PORT_PRODUCT_MANAGER}
+        weight: 100
+      - target: ${PRIVATE_IP_PRODUCT_MANAGER_B}:${PORT_PRODUCT_MANAGER}
+        weight: 100
+
+  # Upstream for Log Managers
+  - name: log_manager_upstream
+    targets:
+      - target: ${PRIVATE_IP_LOG_MANAGER_A}:${PORT_LOG_MANAGER}
+        weight: 100
+      - target: ${PRIVATE_IP_LOG_MANAGER_B}:${PORT_LOG_MANAGER}
+        weight: 100
