@@ -445,6 +445,7 @@ resources:
             echo "Log database is up and running."
             python manage.py runserver ${INTERFACE_LOG_MANAGER}:${PORT_LOG_MANAGER}
 
+  # Health check for components
   - name: product-manager-health-check
     type: compute.v1.healthCheck
     properties:
@@ -456,3 +457,13 @@ resources:
       timeoutSec: 10
       unhealthyThreshold: 3
       healthyThreshold: 2
+  
+  # Instance group for product_manager
+  - name: product-manager-instance-group
+    type: compute.v1.instanceGroup
+    properties:
+      zone: us-central1-a
+      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      instances:
+        - url: $(ref.product-manager-a-instance.selfLink)
+        - url: $(ref.product-manager-b-instance.selfLink)
