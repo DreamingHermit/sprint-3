@@ -22,13 +22,13 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo usermod -aG docker $USER
 newgrp docker
 docker --version
-sudo git init kong_api_gateway/
+git init kong_api_gateway/
 cd kong_api_gateway/
-sudo git remote add -f origin https://github.com/arquisoft-genesis-202401/sprint-2-final.git
-sudo git config core.sparseCheckout true
-sudo echo "kong.yaml.template" >> .git/info/sparse-checkout
-sudo git pull origin main
-sudo envsubst < kong.yaml.template > kong.yml
+git remote add -f origin https://github.com/arquisoft-genesis-202401/sprint-2-final.git
+git config core.sparseCheckout true
+echo "kong.yaml.template" >> .git/info/sparse-checkout
+git pull origin main
+envsubst < kong.yaml.template > kong.yml
 sudo docker network create kong-net
 sudo docker run -d --name kong --network=kong-net -v "$(pwd):/kong/declarative/" -e "KONG_DATABASE=off" -e "KONG_DECLARATIVE_CONFIG=/kong/declarative/kong.yml" -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" -e "KONG_ADMIN_ACCESS_LOG=/dev/stdout" -e "KONG_PROXY_ERROR_LOG=/dev/stderr" -e "KONG_ADMIN_ERROR_LOG=/dev/stderr" -e "KONG_ADMIN_LISTEN=${INTERFACE_KONG_API_GATEWAY}:${PORT_ADMIN_API_KONG_API_GATEWAY}" -e "KONG_ADMIN_GUI_URL=http://localhost:${PORT_ADMIN_GUI_KONG_API_GATEWAY}" -p ${PORT_DEFAULT_KONG_API_GATEWAY}:${PORT_DEFAULT_KONG_API_GATEWAY} -p ${PORT_ADMIN_API_KONG_API_GATEWAY}:${PORT_ADMIN_API_KONG_API_GATEWAY} -p ${PORT_ADMIN_GUI_KONG_API_GATEWAY}:${PORT_ADMIN_GUI_KONG_API_GATEWAY} kong/kong-gateway:2.7.2.0-alpine
 docker ps
