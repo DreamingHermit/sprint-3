@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'log_manager.wsgi.application'
 
 # InfluxDB configuration
 INFLUXDB_CONFIG = {
-    'url': f"http://{os.getenv('PRIVATE_IP_LOG_DATABASE')}:{os.getenv('PORT_LOG_DATABASE')}",
-    'token': f"{os.getenv('LOG_DB_USER')}:{os.getenv('LOG_DB_PASSWORD')}",
-    'org': '-',  # Update this if needed
-    'bucket': os.getenv('LOG_DB_NAME')
+    'host': f"http://{os.getenv('PRIVATE_IP_LOG_DATABASE')}:{os.getenv('PORT_LOG_DATABASE')}",
+    'username': os.getenv('LOG_DB_USER'),
+    'password': os.getenv('LOG_DB_PASSWORD'),
+    'database': os.getenv('LOG_DB_NAME')
 }
 
 

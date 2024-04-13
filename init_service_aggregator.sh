@@ -14,14 +14,7 @@ git config core.sparseCheckout true
 echo "requirements.txt" >> .git/info/sparse-checkout
 echo "service_aggregator/" >> .git/info/sparse-checkout
 git pull origin main 
-sed -i '/.*certifi.*/d' requirements.txt
-sed -i '/.*influxdb-client.*/d' requirements.txt
 sed -i '/.*psycopg2-binary.*/d' requirements.txt
-sed -i '/.*python-dateutil.*/d' requirements.txt
-sed -i '/.*reactivex.*/d' requirements.txt
-sed -i '/.*six.*/d' requirements.txt
-sed -i '/.*typing_extensions.*/d' requirements.txt
-sed -i '/.*urllib3.*/d' requirements.txt
 python3.11 -m venv env --without-pip
 source env/bin/activate
 curl https://bootstrap.pypa.io/get-pip.py | python

@@ -1,30 +1,39 @@
 import json
+import requests
 from datetime import datetime
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from influxdb_client import InfluxDBClient, Point, WritePrecision
-from influxdb_client.client.write_api import SYNCHRONOUS
 from .settings import INFLUXDB_CONFIG 
 from datetime import datetime, timezone
 
-
-client = InfluxDBClient(url=INFLUXDB_CONFIG['url'], token=INFLUXDB_CONFIG['token'], org=INFLUXDB_CONFIG['org'])
-write_api = client.write_api(write_options=SYNCHRONOUS)
-
 @require_http_methods(["POST"])
-def log_event(request):
+def log_entry(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
-        application_id = data['application_id']
-        application_status = data['application_status']
+        application_id = data.get('application_id')
+        application_status = data.get('application_status')
 
-        point = Point("log").tag("application_id", application_id).field("application_status", application_status).time(datetime.now(timezone.utc), WritePrecision.MS)
-        write_api.write(bucket=INFLUXDB_CONFIG['bucket'], record=point)
+        if application_id is None or application_status is None:
+            return JsonResponse({'error': 'Missing application_id or application_status'}, status=400)
 
-        return JsonResponse({"status": "success", "message": "Log stored successfully."}, status=201)
+        INFLUXDB_URL = f"{INFLUXDB_CONFIG['host']}/write?db={INFLUXDB_CONFIG['database']}"
+        
+        # Get current UTC time in ISO 8601 format
+        current_time = datetime.now(timezone.utc).isoformat()
+        
+        # Prepare the data
+        influx_data = f'app_status,application_id={application_id} application_status="{application_status}" {current_time}'
+
+        # Make the POST request
+        response = requests.post(INFLUXDB_URL, data=influx_data, auth=(INFLUXDB_CONFIG['username'], INFLUXDB_CONFIG['password']))
+
+        if response.status_code == 204:
+            return JsonResponse({'message': 'Log entry inserted successfully.'})
+        else:
+            return JsonResponse({'error': 'Failed to insert log entry', 'details': str(response.content)}, status=500)
+
     except json.JSONDecodeError:
-        return JsonResponse({"error": "Invalid JSON data received."}, status=400)
-    except KeyError as e:
-        return JsonResponse({"error": f"Missing field: {str(e)}"}, status=400)
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
     except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+        return JsonResponse({'error': 'Server error', 'details': str(e)}, status=500)

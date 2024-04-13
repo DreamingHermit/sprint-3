@@ -17,11 +17,9 @@ echo "requirements.txt" >> .git/info/sparse-checkout
 echo "product_manager/" >> .git/info/sparse-checkout
 git pull origin main 
 sed -i '/.*certifi.*/d' requirements.txt
-sed -i '/.*influxdb-client.*/d' requirements.txt
-sed -i '/.*python-dateutil.*/d' requirements.txt
-sed -i '/.*reactivex.*/d' requirements.txt
-sed -i '/.*six.*/d' requirements.txt
-sed -i '/.*typing_extensions.*/d' requirements.txt
+sed -i '/.*charset-normalizer.*/d' requirements.txt
+sed -i '/.*idna.*/d' requirements.txt
+sed -i '/.*requests.*/d' requirements.txt
 sed -i '/.*urllib3.*/d' requirements.txt
 python3.11 -m venv env --without-pip
 source env/bin/activate
