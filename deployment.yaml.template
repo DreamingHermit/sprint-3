@@ -430,7 +430,7 @@ resources:
             echo 'export PRIVATE_IP_SERVICE_AGGREGATOR_B="${PRIVATE_IP_SERVICE_AGGREGATOR_B}"' >> ~/.profile
             echo 'export PORT_SERVICE_AGGREGATOR="${PORT_SERVICE_AGGREGATOR}"' >> ~/.profile
             #
-            echo 'export PRIVATE_IP_PRODUCT_MANAGER_A="${RIVATE_IP_PRODUCT_MANAGER_A}"' >> ~/.profile
+            echo 'export PRIVATE_IP_PRODUCT_MANAGER_A="${PRIVATE_IP_PRODUCT_MANAGER_A}"' >> ~/.profile
             echo 'export PRIVATE_IP_PRODUCT_MANAGER_B="${PRIVATE_IP_PRODUCT_MANAGER_B}"' >> ~/.profile
             echo 'export PORT_PRODUCT_MANAGER="${PORT_PRODUCT_MANAGER}"' >> ~/.profile
             echo 'export PRIVATE_IP_LOG_MANAGER_A="${PRIVATE_IP_LOG_MANAGER_A}"' >> ~/.profile
