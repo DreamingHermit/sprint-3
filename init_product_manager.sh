@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ~
 echo 'export PRIVATE_IP_BUSINESS_DATABASE="${PRIVATE_IP_BUSINESS_DATABASE}"' >> ~/.profile
 echo 'export PORT_BUSINESS_DATABASE="${PORT_BUSINESS_DATABASE}"' >> ~/.profile
 echo 'export POSTGRESQL_DB_NAME="${POSTGRESQL_DB_NAME}"' >> ~/.profile
@@ -32,6 +33,6 @@ until nc -z ${PRIVATE_IP_BUSINESS_DATABASE} ${PORT_BUSINESS_DATABASE}; do
   sleep 10
 done
 echo "Business database is up and running."
-python manage.py makemigrations
-python manage.py migrate
+python manage.py makemigrations product_manager
+python manage.py migrate product_manager
 python manage.py runserver ${INTERFACE_PRODUCT_MANAGER}:${PORT_PRODUCT_MANAGER}

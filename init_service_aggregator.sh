@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ~
 echo 'export PRIVATE_IP_LOAD_BALANCER_A="${PRIVATE_IP_LOAD_BALANCER_A}"' >> ~/.profile
 echo 'export PRIVATE_IP_LOAD_BALANCER_B="${PRIVATE_IP_LOAD_BALANCER_B}"' >> ~/.profile
 echo 'export PORT_LOAD_BALANCER="${PORT_LOAD_BALANCER}"' >> ~/.profile  

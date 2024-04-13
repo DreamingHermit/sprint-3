@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ~
 echo 'export PRIVATE_IP_LOG_DATABASE="${PRIVATE_IP_LOG_DATABASE}"' >> ~/.profile
 echo 'export PORT_LOG_DATABASE="${PORT_LOG_DATABASE}"' >> ~/.profile
 echo 'export LOG_DB_NAME="${LOG_DB_NAME}"' >> ~/.profile
