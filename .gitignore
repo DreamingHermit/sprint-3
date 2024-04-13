@@ -2,6 +2,7 @@
 set_env_vars.sh
 deployment*.yaml
 test_*
+init_kong.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
