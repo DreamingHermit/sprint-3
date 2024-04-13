@@ -15,11 +15,12 @@ export PRIVATE_IP_SERVICE_AGGREGATOR_B="<IP>"
 export PORT_SERVICE_AGGREGATOR="<PORT>"
 export INTERFACE_SERVICE_AGGREGATOR="<INTERFACE>"
 
-# Load Balancers env vars
-export PRIVATE_IP_LOAD_BALANCER_A="<IP>" # Balances the load of product managers
-export PRIVATE_IP_LOAD_BALANCER_B="<IP>" # Balances the load of log managers
-export PORT_LOAD_BALANCER="<PORT>"
-#export INTERFACE_LOAD_BALANCER="<PORT>"
+# Service Aggregator Kong env vars
+export PORT_DEFAULT_KONG_SERVICE_AGGREGATOR="<IP>"
+export PORT_ADMIN_API_KONG_SERVICE_AGGREGATOR="<IP>"
+export PORT_ADMIN_GUI_KONG_SERVICE_AGGREGATOR="<IP>"
+export INTERFACE_KONG_SERVICE_AGGREGATOR="<IP>"
+export INTERFACE_2_KONG_SERVICE_AGGREGATOR="<IP>"
 
 # Product Manager env vars
 export PRIVATE_IP_PRODUCT_MANAGER_A="<IP>"

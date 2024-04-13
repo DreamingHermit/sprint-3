@@ -33,8 +33,8 @@ resources:
         ports:
         - ${PORT_SERVICE_AGGREGATOR}
 
-  # Rule 3: Service Aggregators to Load Balancers A & B
-  - name: allow-service-aggregators-to-load-balancers-a
+  # Rule 3: Service Aggregators to Product Managers
+  - name: allow-service-aggregators-a-to-product-managers
     type: compute.v1.firewall
     properties:
       network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
@@ -42,37 +42,6 @@ resources:
       direction: INGRESS
       sourceTags:
       - service-aggregator
-      targetTags:
-      - load-balancer-a
-      allowed:
-      - IPProtocol: TCP
-        ports:
-        - ${PORT_LOAD_BALANCER}
-
-  - name: allow-service-aggregators-to-load-balancers-b
-    type: compute.v1.firewall
-    properties:
-      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
-      priority: 1000
-      direction: INGRESS
-      sourceTags:
-      - service-aggregator
-      targetTags:
-      - load-balancer-b
-      allowed:
-      - IPProtocol: TCP
-        ports:
-        - ${PORT_LOAD_BALANCER}
-
-  # Rule 4: Load Balancer A to Product Managers
-  - name: allow-lb-a-to-product-managers
-    type: compute.v1.firewall
-    properties:
-      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
-      priority: 1000
-      direction: INGRESS
-      sourceTags:
-      - load-balancer-a
       targetTags:
       - product-manager
       allowed:
@@ -80,15 +49,15 @@ resources:
         ports:
         - ${PORT_PRODUCT_MANAGER}
 
-  # Rule 5: Load Balancer B to Log Managers
-  - name: allow-lb-b-to-log-managers
+  # Rule 4: Service Aggregators to Log Managers
+  - name: allow-service-aggregators-to-log-managers
     type: compute.v1.firewall
     properties:
       network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
       priority: 1000
       direction: INGRESS
       sourceTags:
-      - load-balancer-b
+      - service-aggregator
       targetTags:
       - log-manager
       allowed:
@@ -96,7 +65,7 @@ resources:
         ports:
         - ${PORT_LOG_MANAGER}
 
-  # Rule 6: Product Managers to Business Database
+  # Rule 5: Product Managers to Business Database
   - name: allow-product-managers-to-business-db
     type: compute.v1.firewall
     properties:
@@ -112,7 +81,7 @@ resources:
         ports:
         - ${PORT_BUSINESS_DATABASE}
 
-  # Rule 7: Log Managers to Log Database
+  # Rule 6: Log Managers to Log Database
   - name: allow-log-managers-to-log-db
     type: compute.v1.firewall
     properties:
@@ -444,3 +413,32 @@ resources:
             done
             echo "Log database is up and running."
             python manage.py runserver ${INTERFACE_LOG_MANAGER}:${PORT_LOG_MANAGER}
+  
+  # Kong API Gateway
+- type: compute.v1.instance
+  name: kong-api-gateway-instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      networkIP: ${PRIVATE_IP_KONG_API_GATEWAY}
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - kong-api-gateway
+    metadata:
+        items:
+        - key: startup-script
+          value: |
+            #!/bin/bash
+            echo "Done"
