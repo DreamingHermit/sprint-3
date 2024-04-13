@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('log-event/', csrf_exempt(views.log_event), name='log_event')
 ]

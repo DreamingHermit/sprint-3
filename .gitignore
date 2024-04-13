@@ -1,6 +1,7 @@
 # Sensitive information
 set_env_vars.sh
 deployment*.yaml
+test_*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
