@@ -334,3 +334,60 @@ resources:
             python manage.py makemigrations product_manager
             python manage.py migrate product_manager
             python manage.py runserver ${INTERFACE_PRODUCT_MANAGER}:${PORT_PRODUCT_MANAGER}
+  # Instance for Log Manager A
+  - name: log-manager-a-instance
+    type: compute.v1.instance
+    properties:
+      zone: us-central1-a
+      machineType: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/zones/us-central1-a/machineTypes/e2-micro
+      disks:
+      - deviceName: boot
+        type: PERSISTENT
+        boot: true
+        autoDelete: true
+        initializeParams:
+          sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+      networkInterfaces:
+      - network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+        networkIP: ${PRIVATE_IP_LOG_MANAGER_A}
+        accessConfigs:
+        - name: External NAT
+          type: ONE_TO_ONE_NAT
+      tags:
+        items: 
+        - log-manager
+      metadata:
+        items:
+        - key: startup-script
+          value: |
+            #!/bin/bash
+            echo "Done"
+
+  # Instance for Log Manager B
+  - name: log-manager-b-instance
+    type: compute.v1.instance
+    properties:
+      zone: us-central1-a
+      machineType: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/zones/us-central1-a/machineTypes/e2-micro
+      disks:
+      - deviceName: boot
+        type: PERSISTENT
+        boot: true
+        autoDelete: true
+        initializeParams:
+          sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+      networkInterfaces:
+      - network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+        networkIP: ${PRIVATE_IP_LOG_MANAGER_B}
+        accessConfigs:
+        - name: External NAT
+          type: ONE_TO_ONE_NAT
+      tags:
+        items: 
+        - log-manager
+      metadata:
+        items:
+        - key: startup-script
+          value: |
+            #!/bin/bash
+            echo "Done"
