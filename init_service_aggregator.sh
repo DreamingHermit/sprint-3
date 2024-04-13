@@ -1,7 +1,8 @@
 #!/bin/bash
-export PRIVATE_IP_LOAD_BALANCER_A="${PRIVATE_IP_LOAD_BALANCER_A}"
-export PRIVATE_IP_LOAD_BALANCER_B="${PRIVATE_IP_LOAD_BALANCER_B}"
-export PORT_LOAD_BALANCER=="${PORT_LOAD_BALANCER}"
+echo 'export PRIVATE_IP_LOAD_BALANCER_A="${PRIVATE_IP_LOAD_BALANCER_A}"' >> ~/.profile
+echo 'export PRIVATE_IP_LOAD_BALANCER_B="${PRIVATE_IP_LOAD_BALANCER_B}"' >> ~/.profile
+echo 'export PORT_LOAD_BALANCER="${PORT_LOAD_BALANCER}"' >> ~/.profile  
+source ~/.profile
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
 sudo apt install python3.11 -y

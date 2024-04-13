@@ -1,7 +1,8 @@
 #!/bin/bash
-export PRIVATE_IP_SERVICE_AGGREGATOR_A="${PRIVATE_IP_SERVICE_AGGREGATOR_A}"
-export PRIVATE_IP_SERVICE_AGGREGATOR_B="${PRIVATE_IP_SERVICE_AGGREGATOR_B}"
-export PORT_SERVICE_AGGREGATOR="${PORT_SERVICE_AGGREGATOR}"
+echo 'export PRIVATE_IP_SERVICE_AGGREGATOR_A="${PRIVATE_IP_SERVICE_AGGREGATOR_A}"' >> ~/.profile
+echo 'export PRIVATE_IP_SERVICE_AGGREGATOR_B="${PRIVATE_IP_SERVICE_AGGREGATOR_B}"' >> ~/.profile
+echo 'export PORT_SERVICE_AGGREGATOR="${PORT_SERVICE_AGGREGATOR}"' >> ~/.profile
+source ~/.profile
 sudo apt-get update
 sudo apt-get install ca-certificates curl gnupg lsb-release -y
 sudo mkdir -m 0755 -p /etc/apt/keyrings
