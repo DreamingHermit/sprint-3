@@ -42,5 +42,14 @@ This document outlines the steps for deploying Sprint 2 Final using Python 3.11.
     ```bash
     sudo journalctl -u google-startup-scripts.service
     ```
+- Log in into the business database:
+    ```bash
+    psql -U <db_user> -d <db_name> --password
+    ```
+- Query the logs:
+    ```bash
+    influx -database '<db_name>' -execute "SELECT * FROM <measurements>"
+    ```
+
 
 
