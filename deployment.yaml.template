@@ -444,3 +444,54 @@ resources:
             done
             echo "Log database is up and running."
             python manage.py runserver ${INTERFACE_LOG_MANAGER}:${PORT_LOG_MANAGER}
+
+  - name: product-manager-health-check
+    type: compute.v1.healthCheck
+    properties:
+      httpHealthCheck:
+        port: ${PORT_PRODUCT_MANAGER}
+        requestPath: /health
+      checkIntervalSec: 30
+      timeoutSec: 10
+      unhealthyThreshold: 3
+      healthyThreshold: 2
+
+  - name: product-manager-instance-group
+    type: compute.v1.instanceGroup
+    properties:
+      zone: us-central1-a
+      network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      instances:
+        - url: $(ref.product-manager-a-instance.selfLink)
+        - url: $(ref.product-manager-b-instance.selfLink)
+
+  - name: product-manager-backend-service
+    type: compute.v1.backendService
+    properties:
+      protocol: HTTP
+      healthChecks:
+        - $(ref.product-manager-health-check.selfLink)
+      backends:
+        - group: $(ref.product-manager-instance-group.selfLink)
+
+  - name: product-manager-url-map
+    type: compute.v1.urlMap
+    properties:
+      defaultService: $(ref.product-manager-backend-service.selfLink)
+
+  - name: product-manager-target-http-proxy
+    type: compute.v1.targetHttpProxy
+    properties:
+      urlMap: $(ref.product-manager-url-map.selfLink)
+
+  - name: product-manager-forwarding-rule
+    type: compute.v1.globalForwardingRule
+    properties:
+      IPAddress: $(ref.product-manager-reserved-ip.selfLink)
+      portRange: ${PORT_PRODUCT_MANAGER}
+      target: $(ref.product-manager-target-http-proxy.selfLink)
+
+  - name: product-manager-reserved-ip
+    type: compute.v1.globalAddress
+    properties:
+      purpose: GCE_ENDPOINT
