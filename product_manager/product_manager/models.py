@@ -9,6 +9,9 @@ class Customer(models.Model):
     def __str__(self):
         return f'{self.DocumentType} {self.DocumentNumber}'
 
+    class Meta:
+        db_table = 'customer'
+
 # ApplicationStatus Model
 class ApplicationStatus(models.Model):
     StatusDescription = models.CharField(max_length=100)
@@ -17,6 +20,9 @@ class ApplicationStatus(models.Model):
 
     def __str__(self):
         return self.StatusDescription
+    
+    class Meta:
+        db_table = 'application_status'
 
 # Application Model
 class Application(models.Model):
@@ -27,6 +33,9 @@ class Application(models.Model):
 
     def __str__(self):
         return f'{self.CustomerID} - {self.StatusID}'
+
+    class Meta:
+        db_table = 'application'
 
 # BasicInformation Model
 class BasicInformation(models.Model):
@@ -43,6 +52,9 @@ class BasicInformation(models.Model):
 
     def __str__(self):
         return f'{self.FirstName} {self.LastName}'
+
+    class Meta:
+        db_table = 'basic_information'
 
 # EconomicInformation Model
 class EconomicInformation(models.Model):
@@ -64,6 +76,9 @@ class EconomicInformation(models.Model):
     def __str__(self):
         return self.CompanyName
 
+    class Meta:
+        db_table = 'economic_information'
+
 # CardOffer Model
 class CardOffer(models.Model):
     ApplicationID = models.ForeignKey(Application, on_delete=models.CASCADE)
@@ -78,3 +93,6 @@ class CardOffer(models.Model):
 
     def __str__(self):
         return f'{self.CardType} - {self.Franchise}'
+
+    class Meta:
+        db_table = 'card_offer'
