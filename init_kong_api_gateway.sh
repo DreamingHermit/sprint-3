@@ -1,5 +1,4 @@
 #!/bin/bash
-cd ~
 # TODO Service Aggregator
 echo 'export PRIVATE_IP_SERVICE_AGGREGATOR_A="${PRIVATE_IP_SERVICE_AGGREGATOR_A}"' >> ~/.profile
 echo 'export PRIVATE_IP_SERVICE_AGGREGATOR_B="${PRIVATE_IP_SERVICE_AGGREGATOR_B}"' >> ~/.profile
