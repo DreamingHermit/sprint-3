@@ -21,4 +21,4 @@ curl -X GET -H "Content-Type: application/json" -d '{
         "NetWorth": 10000,
         "FullAddress": "123 Main St, CityZ, StateY, CountryX"
     }
-}' "http://0.0.0.0:8080/assess-application/1/"
+}' "http://0.0.0.0:8080/assess-application/1"

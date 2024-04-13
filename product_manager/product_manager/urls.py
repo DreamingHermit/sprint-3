@@ -21,5 +21,5 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('assess-application/<int:application_id>/', csrf_exempt(views.assess_application), name='assess_application'),
+    path('assess-application/<int:application_id>', csrf_exempt(views.assess_application), name='assess_application'),
 ]

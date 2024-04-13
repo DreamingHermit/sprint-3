@@ -74,7 +74,7 @@ def store_offers(application_id, offers):
 
 def simulate_viability_engine(basic_info, economic_info):
     # mock function for the viability API
-    time.sleep(0.1)  # Simulate a 100 ms processing delay
+    time.sleep(0.5)  # Simulate a 100 ms processing delay
     income = float(economic_info.get("Income", 0))
     expenses = float(economic_info.get("Expenses", 0))
     score = (income - expenses) * 0.1
