@@ -7,7 +7,7 @@ from .settings import INFLUXDB_CONFIG
 from datetime import datetime, timezone
 
 @require_http_methods(["POST"])
-def log_entry(request):
+def log_event(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
         application_id = data.get('application_id')
