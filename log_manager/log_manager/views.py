@@ -1,10 +1,9 @@
 import json
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from .settings import INFLUXDB_CONFIG 
-from datetime import datetime, timezone
 
 @require_http_methods(["POST"])
 def log_event(request):
@@ -18,8 +17,8 @@ def log_event(request):
 
         INFLUXDB_URL = f"{INFLUXDB_CONFIG['host']}/write?db={INFLUXDB_CONFIG['database']}"
         
-        # Get current UTC time in ISO 8601 format
-        current_time = datetime.now(timezone.utc).isoformat()
+        # Get current UTC time as Unix timestamp in nanoseconds
+        current_time = int(datetime.now(timezone.utc).timestamp() * 1e9)  # Convert to nanoseconds
         
         # Prepare the data
         influx_data = f'app_status,application_id={application_id} application_status="{application_status}" {current_time}'
