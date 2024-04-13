@@ -413,7 +413,64 @@ resources:
             done
             echo "Log database is up and running."
             python manage.py runserver ${INTERFACE_LOG_MANAGER}:${PORT_LOG_MANAGER}
-  
+
+  # Service Aggregators instances
+  - type: compute.v1.instance
+    name: service-aggregator-a-instance
+    properties:
+      zone: us-central1-a
+      machineType: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/zones/us-central1-a/machineTypes/e2-micro
+      disks:
+      - deviceName: boot
+        type: PERSISTENT
+        boot: true
+        autoDelete: true
+        initializeParams:
+          sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+      networkInterfaces:
+      - network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+        networkIP: ${PRIVATE_IP_SERVICE_AGGREGATOR_A}
+        accessConfigs:
+        - name: External NAT
+          type: ONE_TO_ONE_NAT
+      tags:
+        items: 
+        - service-aggregator
+      metadata:
+        items:
+        - key: startup-script
+          value: |
+            #!/bin/bash
+            echo "Done"
+            
+  - type: compute.v1.instance
+  name: service-aggregator-b-instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID}/global/networks/default
+      networkIP: ${PRIVATE_IP_SERVICE_AGGREGATOR_B}
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - service-aggregator
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          echo "Done"
+
   # Instance of Kong API Gateway
   - type: compute.v1.instance
     name: kong-api-gateway-instance
