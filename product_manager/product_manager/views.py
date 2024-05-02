@@ -101,3 +101,6 @@ def generate_card_offers(assessment_result):
             ]
         return offers
     return []
+
+def health_check(request):
+    return JsonResponse({'message': 'OK'}, status=200)
