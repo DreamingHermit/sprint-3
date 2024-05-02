@@ -20,4 +20,5 @@ from . import views
 
 urlpatterns = [
     path('assess-application/<int:application_id>', csrf_exempt(views.assess_application), name='assess_application'),
+    path('health/', views.health_check, name='health'),
 ]
