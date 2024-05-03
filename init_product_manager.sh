@@ -1,21 +1,14 @@
 #!/bin/bash
 cd ~
-echo 'export PRIVATE_IP_BUSINESS_DATABASE="${PRIVATE_IP_BUSINESS_DATABASE}"' >> ~/.profile
-echo 'export PORT_BUSINESS_DATABASE="${PORT_BUSINESS_DATABASE}"' >> ~/.profile
-echo 'export POSTGRESQL_DB_NAME="${POSTGRESQL_DB_NAME}"' >> ~/.profile
-echo 'export POSTGRESQL_DB_USER="${POSTGRESQL_DB_USER}"' >> ~/.profile
-echo 'export POSTGRESQL_DB_PASSWORD="${POSTGRESQL_DB_PASSWORD}"' >> ~/.profile
+echo 'export PRIVATE_IP_BUSINESS_DATABASE="10.128.0.59"' >> ~/.profile
+echo 'export PORT_BUSINESS_DATABASE="5432"' >> ~/.profile
+echo 'export POSTGRESQL_DB_NAME="business_db"' >> ~/.profile
+echo 'export POSTGRESQL_DB_USER="badmin_user"' >> ~/.profile
+echo 'export POSTGRESQL_DB_PASSWORD="isis2503"' >> ~/.profile
 source ~/.profile
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
 sudo apt install python3.11 -y
-git init product_manager/
-cd product_manager/
-git remote add -f origin https://github.com/arquisoft-genesis-202401/sprint-2-final.git
-git config core.sparseCheckout true
-echo "requirements.txt" >> .git/info/sparse-checkout
-echo "product_manager/" >> .git/info/sparse-checkout
-git pull origin main 
 sed -i '/.*certifi.*/d' requirements.txt
 sed -i '/.*charset-normalizer.*/d' requirements.txt
 sed -i '/.*idna.*/d' requirements.txt
