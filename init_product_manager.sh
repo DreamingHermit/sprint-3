@@ -27,4 +27,4 @@ done
 echo "Business database is up and running."
 python manage.py makemigrations product_manager
 python manage.py migrate product_manager
-python manage.py runserver ${INTERFACE_PRODUCT_MANAGER}:${PORT_PRODUCT_MANAGER}
+python manage.py runserver 0.0.0.0:8000
