@@ -17,6 +17,7 @@ sed -i '/.*urllib3.*/d' requirements.txt
 python3.11 -m venv env --without-pip
 source env/bin/activate
 curl https://bootstrap.pypa.io/get-pip.py | python
+cd sprint-3
 pip install -r requirements.txt
 cd product_manager/
 until nc -z ${PRIVATE_IP_BUSINESS_DATABASE} ${PORT_BUSINESS_DATABASE}; do
